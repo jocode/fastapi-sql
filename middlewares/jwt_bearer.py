@@ -1,6 +1,8 @@
-from fastapi.security import HTTPBearer
 from fastapi import HTTPException, Request
-from jwt_manager import validate_token
+from fastapi.security import HTTPBearer
+
+from utils.jwt_manager import validate_token
+
 
 class JWTBearer(HTTPBearer):
     async def __call__(self, request: Request):

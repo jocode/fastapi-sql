@@ -1,8 +1,8 @@
 from fastapi import APIRouter
 from starlette.responses import JSONResponse
 
-from jwt_manager import create_token
 from schemes.user import User
+from utils.jwt_manager import create_token
 
 user_router = APIRouter()
 
