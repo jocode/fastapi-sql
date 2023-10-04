@@ -1,4 +1,4 @@
-from models.movie import Movie as MovieModel
+from models.MovieModel import MovieModel as MovieModel
 from schemes.movie import Movie
 
 

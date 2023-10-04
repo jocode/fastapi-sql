@@ -1,9 +1,9 @@
 from sqlalchemy import Column, Integer, String, Float
 
-from config.database import Base
+from models.BaseModel import EntityMeta
 
 
-class Movie(Base):
+class MovieModel(EntityMeta):
     __tablename__ = 'movies'
 
     id = Column(Integer, primary_key=True)
