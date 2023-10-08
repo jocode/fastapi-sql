@@ -1,4 +1,3 @@
-from models.MovieModel import MovieModel as MovieModel
 from schemes.movie import Movie
 
 
@@ -8,25 +7,25 @@ class MovieService:
         self.db = db
 
     def get_movies(self):
-        response = self.db.query(MovieModel).all()
+        response = self.db.query(Movie).all()
         return response
 
     def get_movie(self, id: int):
-        response = self.db.query(MovieModel).filter(MovieModel.id == id).first()
+        response = self.db.query(Movie).filter(Movie.id == id).first()
         return response
 
     def get_movies_by_category(self, category: str):
-        response = self.db.query(MovieModel).filter(MovieModel.category == category).all()
+        response = self.db.query(Movie).filter(Movie.category == category).all()
         return response
 
     def create_movie(self, movie: Movie):
-        new_movie = MovieModel(**movie.model_dump())
+        new_movie = Movie(**movie.model_dump())
         self.db.add(new_movie)
         self.db.commit()
         return movie
 
     def update_movie(self, id: int, movie: Movie):
-        response = self.db.query(MovieModel).filter(MovieModel.id == id).first()
+        response = self.db.query(Movie).filter(Movie.id == id).first()
         if not response:
             return None
 
@@ -41,7 +40,7 @@ class MovieService:
         return movie
 
     def delete_movie(self, id: int):
-        response = self.db.query(MovieModel).filter(MovieModel.id == id).first()
+        response = self.db.query(Movie).filter(Movie.id == id).first()
         if not response:
             return None
 

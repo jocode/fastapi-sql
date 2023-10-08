@@ -3,8 +3,8 @@ from sqlalchemy import Column, Integer, String, Float
 from models.BaseModel import EntityMeta
 
 
-class MovieModel(EntityMeta):
-    __tablename__ = 'movies'
+class Movie(EntityMeta):
+    __tablename__ = "movies"
 
     id = Column(Integer, primary_key=True)
     title = Column(String)

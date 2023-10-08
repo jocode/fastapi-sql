@@ -7,7 +7,7 @@ from starlette.responses import JSONResponse
 from config.Database import SessionLocal
 from middlewares.jwt_bearer import JWTBearer
 from schemes.movie import Movie
-from services.movie import MovieService
+from services.MovieService import MovieService
 
 movie_router = APIRouter()
 
