@@ -23,6 +23,10 @@ class MovieRepository:
 
     def get(self, id: int) -> Movie:
         query = self.db.query(Movie).filter(Movie.id == id)
+
+        if not query.first():
+            return None
+
         return query.first()
 
     def create(self, movie: Movie) -> Movie:
@@ -31,14 +35,18 @@ class MovieRepository:
         self.db.refresh(movie)
         return movie
 
-    def update(self, id: int, movie: Movie) -> Movie:
+    def update(self, id: int, movie: Movie) -> Movie | None:
+        # Check if movie exists
+        if not self.get(id):
+            return None
+
         movie.id = id
         self.db.merge(movie)
         self.db.commit()
         return movie
 
     def delete(self, id: int) -> Movie | None:
-        movie = self.db.query(Movie).filter(Movie.id == id).first()
+        movie = self.get(id)
 
         if not movie:
             return None

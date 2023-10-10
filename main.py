@@ -3,8 +3,8 @@ from fastapi.responses import HTMLResponse
 
 from middlewares.error_handler import ErrorHandler
 from models.BaseModel import init_db
-from routers.movie import movie_router
 from routers.user import user_router
+from routers.v1.MovieRouter import MovieRouter
 
 app = FastAPI()
 app.title = "Movies API"
@@ -13,7 +13,8 @@ app.description = "API para el manejo de películas"
 
 app.add_middleware(ErrorHandler)
 
-app.include_router(movie_router)
+# Add routers
+app.include_router(MovieRouter)
 app.include_router(user_router)
 
 # Initialize Data Model attributes

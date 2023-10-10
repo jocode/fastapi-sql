@@ -1,49 +1,51 @@
-from schemes.movie import Movie
+from typing import Optional, List
+
+from fastapi import Depends
+
+from models.MovieModel import Movie
+from repositories.MovieRepository import MovieRepository
+from schemes.pydantic.MovieSchema import MovieSchema
 
 
 class MovieService:
+    movieRepository: MovieRepository
 
-    def __init__(self, db) -> None:
-        self.db = db
+    def __init__(
+            self, movie_repository: MovieRepository = Depends()
+    ) -> None:
+        self.movieRepository = movie_repository
 
-    def get_movies(self):
-        response = self.db.query(Movie).all()
-        return response
+    def list(
+            self,
+            category: Optional[str] = None
+    ) -> List[Movie]:
+        return self.movieRepository.list(category)
 
-    def get_movie(self, id: int):
-        response = self.db.query(Movie).filter(Movie.id == id).first()
-        return response
+    def get(self, id: int) -> Movie:
+        return self.movieRepository.get(id)
 
-    def get_movies_by_category(self, category: str):
-        response = self.db.query(Movie).filter(Movie.category == category).all()
-        return response
+    def create(self, movie_body: MovieSchema) -> Movie:
+        return self.movieRepository.create(
+            Movie(
+                title=movie_body.title,
+                overview=movie_body.overview,
+                year=movie_body.year,
+                rating=movie_body.rating,
+                category=movie_body.category
+            )
+        )
 
-    def create_movie(self, movie: Movie):
-        new_movie = Movie(**movie.model_dump())
-        self.db.add(new_movie)
-        self.db.commit()
-        return movie
+    def update(self, id: int, movie_body: MovieSchema) -> Movie:
+        return self.movieRepository.update(
+            id,
+            Movie(
+                title=movie_body.title,
+                overview=movie_body.overview,
+                year=movie_body.year,
+                rating=movie_body.rating,
+                category=movie_body.category
+            )
+        )
 
-    def update_movie(self, id: int, movie: Movie):
-        response = self.db.query(Movie).filter(Movie.id == id).first()
-        if not response:
-            return None
-
-        # Update movie
-        response.title = movie.title
-        response.overview = movie.overview
-        response.year = movie.year
-        response.rating = movie.rating
-        response.category = movie.category
-
-        self.db.commit()
-        return movie
-
-    def delete_movie(self, id: int):
-        response = self.db.query(Movie).filter(Movie.id == id).first()
-        if not response:
-            return None
-
-        self.db.delete(response)
-        self.db.commit()
-        return response
+    def delete(self, id: int) -> Movie:
+        return self.movieRepository.delete(id)
